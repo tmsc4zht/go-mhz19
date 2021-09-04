@@ -8,15 +8,11 @@ import (
 )
 
 func main() {
-	m := mhz19.Client{}
-	if err := m.Connect(); err != nil {
-		fmt.Printf("{\"error\": \"%s\"}", err)
-		os.Exit(0)
-	}
+	m := mhz19.New("/dev/serial0")
 	v, err := m.ReadCO2()
 	if err != nil {
-		fmt.Printf("{\"error\": \"%s\"}", err)
+		fmt.Printf("{\"error\": \"%s\"}\n", err)
 		os.Exit(0)
 	}
-	fmt.Printf("{\"co2\": \"%d\"}", v)
+	fmt.Printf("{\"co2\": \"%d\"}\n", v)
 }

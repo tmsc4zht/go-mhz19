@@ -1,44 +1,43 @@
 package mhz19
 
 import (
-	"io"
+	"fmt"
 
 	"github.com/tarm/serial"
 )
 
 type Client struct {
-	port *serial.Port
+	s *serial.Config
 }
 
-func (m *Client) Connect() error {
-	c := &serial.Config{Name: "/dev/ttyS0", Baud: 9600}
-	p, err := serial.OpenPort(c)
-	if err != nil {
-		return err
+func New(name string) *Client {
+	s := &serial.Config{
+		Name:     name,
+		Baud:     9600,
+		Size:     8,
+		StopBits: serial.Stop1,
+		Parity:   serial.ParityNone,
 	}
-	m.port = p
-	return nil
+	return &Client{s: s}
 }
 
 func (m *Client) ReadCO2() (int, error) {
-	err := m.writeToReadCO2()
+	p, err := serial.OpenPort(m.s)
 	if err != nil {
-		return 0, err
+		return 0, fmt.Errorf("could not open port: %v", err)
+	}
+	defer p.Close()
+
+	readCO2concentrationCommand := []byte{0xFF, 0x01, 0x86, 0x00, 0x00, 0x00, 0x00, 0x00, 0x79}
+	if _, err := p.Write(readCO2concentrationCommand); err != nil {
+		return 0, fmt.Errorf("could not send command: %v", err)
 	}
 
-	// read bytes
 	buf := make([]byte, 9)
-	_, err = io.ReadFull(m.port, buf)
+	_, err = p.Read(buf)
 	if err != nil {
-		return 0, err
+		return 0, fmt.Errorf("could not read result: %v", err)
 	}
-	return int(buf[2])*256 + int(buf[3]), nil
-}
 
-func (m *Client) writeToReadCO2() error {
-	_, err := m.port.Write([]byte{0xFF, 0x01, 0x86, 0x00, 0x00, 0x00, 0x00, 0x00, 0x79})
-	if err != nil {
-		return err
-	}
-	return nil
+	return int(buf[2])*256 + int(buf[3]), nil
 }

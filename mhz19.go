@@ -35,9 +35,12 @@ func (m *Client) ReadCO2() (int, error) {
 	}
 
 	buf := make([]byte, 9)
-	_, err = io.ReadFull(p, buf)
+	n, err := io.ReadFull(p, buf)
 	if err != nil {
 		return 0, fmt.Errorf("could not read result: %v", err)
+	}
+	if n != 9 {
+		return 0, fmt.Errorf("return value must 9 bytes but got %d byte(s)", n)
 	}
 
 	return int(buf[2])*256 + int(buf[3]), nil

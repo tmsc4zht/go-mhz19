@@ -2,6 +2,7 @@ package mhz19
 
 import (
 	"fmt"
+	"io"
 
 	"github.com/tarm/serial"
 )
@@ -34,7 +35,7 @@ func (m *Client) ReadCO2() (int, error) {
 	}
 
 	buf := make([]byte, 9)
-	_, err = p.Read(buf)
+	_, err = io.ReadFull(p, buf)
 	if err != nil {
 		return 0, fmt.Errorf("could not read result: %v", err)
 	}

@@ -11,8 +11,8 @@ func main() {
 	m := mhz19.New("/dev/serial0")
 	v, err := m.ReadCO2()
 	if err != nil {
-		fmt.Printf("{\"error\": \"%s\"}\n", err)
+		fmt.Fprintln(os.Stderr, err)
 		os.Exit(-1)
 	}
-	fmt.Printf("{\"co2\": \"%d\"}\n", v)
+	fmt.Println(v)
 }

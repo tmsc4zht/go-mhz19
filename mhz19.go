@@ -6,11 +6,11 @@ import (
 	"github.com/tarm/serial"
 )
 
-type MHZ19 struct {
+type Client struct {
 	port *serial.Port
 }
 
-func (m *MHZ19) Connect() error {
+func (m *Client) Connect() error {
 	c := &serial.Config{Name: "/dev/ttyS0", Baud: 9600}
 	p, err := serial.OpenPort(c)
 	if err != nil {
@@ -20,7 +20,7 @@ func (m *MHZ19) Connect() error {
 	return nil
 }
 
-func (m *MHZ19) ReadCO2() (int, error) {
+func (m *Client) ReadCO2() (int, error) {
 	err := m.writeToReadCO2()
 	if err != nil {
 		return 0, err
@@ -35,7 +35,7 @@ func (m *MHZ19) ReadCO2() (int, error) {
 	return int(buf[2])*256 + int(buf[3]), nil
 }
 
-func (m *MHZ19) writeToReadCO2() error {
+func (m *Client) writeToReadCO2() error {
 	_, err := m.port.Write([]byte{0xFF, 0x01, 0x86, 0x00, 0x00, 0x00, 0x00, 0x00, 0x79})
 	if err != nil {
 		return err

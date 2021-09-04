@@ -8,7 +8,7 @@ import (
 )
 
 func main() {
-	m := mhz19.MHZ19{}
+	m := mhz19.Client{}
 	if err := m.Connect(); err != nil {
 		fmt.Printf("{\"error\": \"%s\"}", err)
 		os.Exit(0)

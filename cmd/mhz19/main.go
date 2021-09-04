@@ -12,7 +12,7 @@ func main() {
 	v, err := m.ReadCO2()
 	if err != nil {
 		fmt.Printf("{\"error\": \"%s\"}\n", err)
-		os.Exit(0)
+		os.Exit(-1)
 	}
 	fmt.Printf("{\"co2\": \"%d\"}\n", v)
 }

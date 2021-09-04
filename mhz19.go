@@ -39,9 +39,29 @@ func (m *Client) ReadCO2() (int, error) {
 	if err != nil {
 		return 0, fmt.Errorf("could not read result: %v", err)
 	}
+
 	if n != 9 {
 		return 0, fmt.Errorf("return value must 9 bytes but got %d byte(s)", n)
 	}
 
+	if err := checkSum(buf); err != nil {
+		return 0, fmt.Errorf("check sum failed: %v", err)
+	}
+
 	return int(buf[2])*256 + int(buf[3]), nil
+}
+
+func checkSum(b []byte) error {
+	if len(b) != 9 {
+		return fmt.Errorf("return value length must be 9 but %d", len(b))
+	}
+	sum := byte(0)
+	for i := 1; i < 8; i++ {
+		sum += b[i]
+	}
+	if b[8] != -sum {
+		return fmt.Errorf("check sum failed expected %v, calclated: %v", b[8], -sum)
+	}
+
+	return nil
 }

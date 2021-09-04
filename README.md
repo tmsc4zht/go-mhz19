@@ -9,7 +9,7 @@ $ go get github.com/tmsc4zht/mhz19/cmd/mhz19
 ## Usage
 ```shell script
 $ mhz19
-{"co2": "554"}
+554
 ```
 
 ## Use as a library
@@ -17,19 +17,19 @@ $ mhz19
 package main
 
 import (
-	"log"
+	"fmt"
+	"os"
+
 	"github.com/tmsc4zht/mhz19"
 )
 
 func main() {
-	m := mhz19.MHZ19{}
-	if err := m.Connect(); err != nil {
-		log.Fatal(err)
-	}
+	m := mhz19.New("/dev/serial0")
 	v, err := m.ReadCO2()
 	if err != nil {
-		log.Fatal(err)
+		fmt.Fprintln(os.Stderr, err)
+		os.Exit(-1)
 	}
-	log.Printf("CO2 Concentration: %dppm\n", v)
+	fmt.Println(v)
 }
 ```

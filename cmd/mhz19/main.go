@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/kebhr/mhz19"
+	"github.com/tmsc4zht/mhz19"
 )
 
 func main() {

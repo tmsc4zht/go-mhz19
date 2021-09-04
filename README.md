@@ -3,7 +3,7 @@ Read CO2 concentration from MH-Z19 on Raspberry Pi.
 
 ## Installation
 ```shell script
-$ go get github.com/kebhr/mhz19/cmd/mhz19
+$ go get github.com/tmsc4zht/mhz19/cmd/mhz19
 ```
 
 ## Usage
@@ -18,7 +18,7 @@ package main
 
 import (
 	"log"
-	"github.com/kebhr/mhz19"
+	"github.com/tmsc4zht/mhz19"
 )
 
 func main() {

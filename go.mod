@@ -1,4 +1,4 @@
-module github.com/kebhr/mhz19
+module github.com/tmsc4zht/mhz19
 
 go 1.14
 

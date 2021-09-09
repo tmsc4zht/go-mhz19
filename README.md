@@ -33,3 +33,13 @@ func main() {
 	fmt.Println(v)
 }
 ```
+
+---
+
+## Differences from the original version
+
+- You can select serial device file to use.
+- Close serial port after read value.
+- Calc checksum.
+- `mhz19` prints only numeric value.
+- `mhz19` returns `-1` when error happens.
